@@ -75,37 +75,46 @@ sub process_pd_files {
     for my $file (@$files) {
         my ( $build_prefix, $prefix, $mod_name ) = $self->_filename2info($file);
 
-        # see sub run_perl_command (yet undocumented)
-        # PDL::PP's import argument are, in order:
-        # Module name -> for example, PDL::Graphics::PLplot
-        # Package name -> used in package line of the .pm file; for our purposes,
-        #     this is identical to Module name.
-        # Prefix -> the extensionless file name, PDL/Graphics/PLplot
-        #    .pm and .xs extensions will be added to this when the files are
-        #    produced, so this should include a lib/ prefix
-        # Callpack -> an optional argument used for the XS PACKAGE keyword;
-        #    if left blank, it will be identical to the module name
-        my $PDL_arg = "-MPDL::PP qw[$mod_name $mod_name $build_prefix]";
-
-        # Both $self->up_to_date and $self->run_perl_command are undocumented
-        # so they could change in the future:
-        my $up_to_date = $builder->up_to_date( $file,
-            [ "$build_prefix.pm", "$build_prefix.xs" ] );
-        if ( $builder->{FORCE_PDL_PP_BUILD} or not $up_to_date ) {
-            $builder->run_perl_command( [ $PDL_arg, $file ] );
-        }
+        $self->_convert_to_pm( $file, $build_prefix, $prefix, $mod_name );
 
         $self->_add_to_provides( {
             mod_name => $mod_name,
             file     => $file,
             version  => $builder->dist_version
         } );
+
         $builder->add_to_cleanup( "$build_prefix.pm", "$build_prefix.xs" );
 
         # Add the newly created .pm and .xs files to the list of such files?
         # No, because the current build process looks for all such files and
         # processes them, and it doesn't create that list until it's actually
         # processing the .pm and .xs files.
+    }
+}
+
+sub _convert_to_pm {
+    my ( $self, $file, $build_prefix, $prefix, $mod_name ) = @_;
+    my $builder = $self->builder;
+
+    # see sub run_perl_command (yet undocumented)
+    # PDL::PP's import argument are, in order:
+    # Module name -> for example, PDL::Graphics::PLplot
+    # Package name -> used in package line of the .pm file; for our purposes,
+    #     this is identical to Module name.
+    # Prefix -> the extensionless file name, PDL/Graphics/PLplot
+    #    .pm and .xs extensions will be added to this when the files are
+    #    produced, so this should include a lib/ prefix
+    # Callpack -> an optional argument used for the XS PACKAGE keyword;
+    #    if left blank, it will be identical to the module name
+    my $PDL_arg = "-MPDL::PP qw[$mod_name $mod_name $build_prefix]";
+
+    # Both $self->up_to_date and $self->run_perl_command are undocumented
+    # so they could change in the future:
+    my $up_to_date =
+      $builder->up_to_date( $file, [ "$build_prefix.pm", "$build_prefix.xs" ] );
+
+    if ( $builder->{FORCE_PDL_PP_BUILD} or not $up_to_date ) {
+        $builder->run_perl_command( [ $PDL_arg, $file ] );
     }
 }
 
