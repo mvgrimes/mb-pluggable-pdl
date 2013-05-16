@@ -1,5 +1,5 @@
 {
-   "abstract" : "Plugin to Module::Build to process PDL's .pd files",
+   "abstract" : "Plugin to Module::Build to build PDL projets",
    "author" : [
       "Mark Grimes, E<lt>mgrimes@cpan.orgE<gt>"
    ],

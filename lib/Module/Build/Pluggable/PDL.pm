@@ -185,18 +185,10 @@ version 0.20
 =head1 DESCRIPTION
 
 This is a plugin for L<Module::Build> (using L<Module::Build::Pluggable>)
-that will assist in building L<PDL> distributions.
+that will assist in building L<PDL> distributions. Please see the
+L<Module::Build::Authoring> documentation if you are not familiar with it.
 
 =over 4
-
-=item Add Include Dirs
-
-    include_dirs => PDL::Core::Dev::whereami_any() . '/Core';
-
-=item Add Extra Linker Flags
-
-    extra_linker_flags =>  $PDL::Config{MALLOCDBG}->{libs}
-      if $PDL::Config{MALLOCDBG}->{libs};
 
 =item Add Prerequisites
 
@@ -211,18 +203,54 @@ to C<requires => {}> as usual.
 
 =item Process C<.pd> files
 
-The C<lib> directory of your distribution will be searched for C<.pd> files.
-Immediately prior to the build phase, these will be processed by C<PDL::PP>
-into C<.xs>, C<.pm>, etc. files as required to continue the build process.
-These will then be processed by C<Ext::CBuilder> as normal.
+The C<lib> directory of your distribution will be searched for C<.pd> files
+and, immediately prior to the build phase, these will be processed by
+C<PDL::PP> into C<.xs> and C<.pm>. files as required to continue the build
+process.  These will then be processed by C<Ext::CBuilder> as normal. These
+files are also added to the list of file to be cleaned up.
+
+In addition, an entry will be made into C<provides> for the C<.pm> file of the
+C<META.json/yml> files. This will assist PAUSE, search.cpan.org and metacpan.org
+in properly indexing the distribution and 
+
+=item Generate C<.pod> file from the C<.pd>
+
+When building the distribution (C<./Build dist> or C<./Build distdir>), any
+C<.pd> file found in the C<lib> directory will converted into C<.pod> files.
+This produces a standalone version of the documentation which can be viewed
+on search.cpan.org, metacpan.org, etc. When these sites attempt to display 
+the pod in the C<.pd> files directly, there is often formatting and processing
+issues.
+
+This is accomplished by first processing the files with C<PDL::PP> and then
+C<perldoc -u>.
+
+=item Add Include Dirs
+
+    include_dirs => PDL::Core::Dev::whereami_any() . '/Core';
+
+The C<PDL/Core> directory is added to the C<include_dirs> flag.
+
+=item Add Extra Linker Flags
+
+    extra_linker_flags =>  $PDL::Config{MALLOCDBG}->{libs}
+      if $PDL::Config{MALLOCDBG}->{libs};
+
+If needed, the MALLOCDBG libs will be added to the C<extra_linker_flags>.
 
 =back
 
 =head1 SEE ALSO
 
-L<Module::Build::PDL>
-L<Module::Build>
-L<Module::Build::Pluggable>
+This is essentially a rewrite of David Mertens' L<Module::Build::PDL> to use
+L<Module::Build::Pluggable>. The conversion to L<Module::Build::Pluggable>
+fixes multiple inheritance issues with subclassing L<Module::Build>. In
+particular, I needed to be able use the L<Module::Build::Pluggable::Fortran>
+in my PDL projects.
+
+Thank you David++ for L<Module::Build::PDL>.
+
+Of course, all of this just tweaks the L<Module::Build> setup.
 
 =head1 AUTHOR
 
