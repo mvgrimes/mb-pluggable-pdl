@@ -26,7 +26,7 @@ sub HOOK_configure {
 
     $self->_add_include_dirs( PDL::Core::Dev::whereami_any() . '/Core' );
 
-    $self->builder->add_extra_linker_flags( $PDL::Config{MALLOCDBG}->{libs} )
+    $self->_add_extra_linker_flags( $PDL::Config{MALLOCDBG}->{libs} )
       if $PDL::Config{MALLOCDBG}->{libs};
 
     $self->requires( 'PDL' => '2.006' );
@@ -42,6 +42,14 @@ sub _add_include_dirs {
     my $include_dirs = $self->builder->include_dirs;
     push @$include_dirs, @dirs;
     $self->builder->include_dirs($include_dirs);
+}
+
+sub _add_extra_linker_flags {
+    my ( $self, @new_flags ) = @_;
+
+    my $linker_flags = $self->builder->extra_linker_flags;
+    push @$linker_flags, @new_flags;
+    $self->builder->extra_linker_flags($linker_flags);
 }
 
 # Allow the person installing to force a PDL::PP rebuild
