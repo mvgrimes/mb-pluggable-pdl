@@ -1,0 +1,25 @@
+.*.swp
+.build
+
+META.yml
+!META.json
+MYMETA.yml
+MYMETA.json
+blib/
+^Build
+_build/
+pm_to_blib
+dist.ini
+MANIFEST
+Module-Build-Pluggable-PDL-*
+MANIFEST.bak
+exp/
+tmp/
+Changes.bak
+t/data
+t/var
+nytprof*
+
+# podweaver backups
+*.pm.bak
+
