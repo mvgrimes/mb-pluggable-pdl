@@ -32,7 +32,7 @@
    "provides" : {
       "Module::Build::Pluggable::PDL" : {
          "file" : "lib/Module/Build/Pluggable/PDL.pm",
-         "version" : "0.20"
+         "version" : "0.21"
       }
    },
    "release_status" : "stable",
@@ -47,7 +47,7 @@
          "url" : "http://github.com/mvgrimes/mb-pluggable-pdl"
       }
    },
-   "version" : "0.20",
+   "version" : "0.21",
    "x_test_requires" : {
       "IPC::Cmd" : "0",
       "Test::More" : "0.87"

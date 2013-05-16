@@ -1,4 +1,7 @@
 Changes for Module::Build::Pluggable::PDL
 
+0.21 - Thu May 16 11:28:21 EDT 2013
+    Fixes bug in add_extra_linker_flags
+
 0.20 - Thu May 16 10:36:21 EDT 2013
     Initial release of Module::Build::Pluggable::PDL

@@ -5,6 +5,7 @@
 ^Build$
 ^blib
 \.swp$
+\.swo$
 \.bak$
 \.git/
 ^Module-Build-Pluggable-PDL-*

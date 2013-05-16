@@ -4,7 +4,7 @@ package Module::Build::Pluggable::PDL;
 
 use strict;
 use warnings;
-our $VERSION = '0.20';
+our $VERSION = '0.21';
 use parent qw(Module::Build::Pluggable::Base);
 
 use PDL::Core::Dev;
@@ -174,7 +174,7 @@ Module::Build::Pluggable::PDL - Plugin to Module::Build to build PDL projets
 
 =head1 VERSION
 
-version 0.20
+version 0.21
 
 =head1 SYNOPSIS
 
