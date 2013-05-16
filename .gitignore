@@ -6,7 +6,8 @@ META.yml
 MYMETA.yml
 MYMETA.json
 blib/
-^Build
+Build
+!lib/Module/Build
 _build/
 pm_to_blib
 dist.ini
@@ -23,3 +24,4 @@ nytprof*
 # podweaver backups
 *.pm.bak
 
+README

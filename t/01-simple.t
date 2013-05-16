@@ -54,29 +54,33 @@ my $builder = Module::Build::Pluggable->new(
 );
 $builder->create_build_script();
 is( @{ $builder->include_dirs }, 1, "added include dirs" );
-ok( any( sub { $_ eq 'pd' }, @{ $builder->build_elements } ),
-    "added pd to build elements" );
-
 ok( -f 'Build', 'Build file created' );
 
 my $buffer;
-ok( run( command => './Build', verbose => 1, buffer => \$buffer ), 'Ran Build' )
-  or diag $buffer;
-
+run_ok( './Build', 'Ran Build' );
 ok( -f 'lib/PDL/Test/PD.pm', '... Build created .pm file' );
 ok( -f 'lib/PDL/Test/PD.xs', '... and .xs file' );
 
-ok( run( command => './Build distmeta', verbose => 1, buffer => \$buffer ),
-    "Ran Build distmeta" );
-ok( -f 'META.json', 'Build created META.json file' );
+run_ok( './Build distmeta', "Ran Build distmeta" );
+ok( -f 'META.json', '... created META.json file' );
 
-ok( run( command => './Build distdir', verbose => 1, buffer => \$buffer ),
-    "Ran Build distdir" );
+run_ok( './Build distdir', "Ran Build distdir" );
 ok( -f 'lib/PDL/Test/PD.pod', '... and .pod file' );
 
-# ok( run( command=>'./Build clean', verbose=>1, buffer=>\$buffer ), "Ran Build clean");
-# ok(! -f 'lib/PDL/Test/PD.pm', 'Build clean removed .pm file' );
-# ok(! -f 'lib/PDL/Test/PD.xs', '... and .xs file' );
-# ok(! -f 'lib/PDL/Test/PD.pod', '... and .pod file' );
+run_ok( './Build clean', "Ran Build clean" );
+ok( !-f 'lib/PDL/Test/PD.pm',  '... removed .pm file' );
+ok( !-f 'lib/PDL/Test/PD.xs',  '... and .xs file' );
+ok( !-f 'lib/PDL/Test/PD.pod', '... and .pod file' );
 
 done_testing;
+
+sub run_ok {
+    my ( $cmd, $desc ) = @_;
+
+    my $buffer;
+    my $ok =
+      ok( run( command => $cmd, verbose => 0, buffer => \$buffer ), $desc );
+    diag $buffer unless $ok;
+    return $ok;
+}
+

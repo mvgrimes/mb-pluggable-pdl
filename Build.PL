@@ -18,6 +18,7 @@ my $build = Module::Build->new(
 
     test_requires => {
         'Test::More' => 0.87,
+        'IPC::Cmd'   => 0,
     },
 
     meta_merge => {
