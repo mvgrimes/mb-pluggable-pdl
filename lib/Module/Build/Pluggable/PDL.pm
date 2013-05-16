@@ -1,6 +1,6 @@
 package Module::Build::Pluggable::PDL;
 
-# ABSTRACT: Plugin to Module::Build to process PDL's .pd files
+# ABSTRACT: Plugin to Module::Build to build PDL projets
 
 use strict;
 use warnings;
@@ -162,7 +162,7 @@ __END__
 
 =head1 NAME
 
-Module::Build::Pluggable::PDL - Plugin to Module::Build to process PDL's .pd files
+Module::Build::Pluggable::PDL - Plugin to Module::Build to build PDL projets
 
 =head1 VERSION
 

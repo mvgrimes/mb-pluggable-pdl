@@ -1,0 +1,25 @@
+# File of RegExps to skip:
+
+~$
+^_build
+^Build$
+^blib
+\.swp$
+\.bak$
+\.git/
+^Module-Build-Pluggable-PDL-*
+^MANIFEST\.SKIP$
+^\.gitignore$
+^\.build$
+^dist.ini$
+^README.md$
+^weaver.ini$
+\.travis.yml$
+^exp/
+^tmp/
+^t/var/
+^MYMETA.yml$
+^MYMETA\.json$
+^nytprof/
+^nytprof.out$
+.DS_Store$

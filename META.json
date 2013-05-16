@@ -29,6 +29,12 @@
          }
       }
    },
+   "provides" : {
+      "Module::Build::Pluggable::PDL" : {
+         "file" : "lib/Module/Build/Pluggable/PDL.pm",
+         "version" : "0.20"
+      }
+   },
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
