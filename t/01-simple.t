@@ -4,12 +4,13 @@ use Test::More;
 use Path::Class;
 use List::MoreUtils qw(any);
 use IPC::Cmd qw(run);
+use Config;
 
 BEGIN {
     my $var = dir('t/var');
     $var->rmtree;
     $var->mkpath;
-    chdir $var;
+    chdir $var or die "Unable to chdir into $var: $!";
     file('MANIFEST')->spew('');
     dir('lib/PDL/Test')->mkpath;
     file('lib/PDL/Test/PD.pd')->spew(<<'PDFILE');
@@ -57,17 +58,17 @@ is( @{ $builder->include_dirs }, 1, "added include dirs" );
 ok( -f 'Build', 'Build file created' );
 
 my $buffer;
-run_ok( './Build', 'Ran Build' );
+run_ok( 'Build', 'Ran Build' );
 ok( -f 'lib/PDL/Test/PD.pm', '... Build created .pm file' );
 ok( -f 'lib/PDL/Test/PD.xs', '... and .xs file' );
 
-run_ok( './Build distmeta', "Ran Build distmeta" );
+run_ok( 'Build distmeta', "Ran Build distmeta" );
 ok( -f 'META.json', '... created META.json file' );
 
-run_ok( './Build distdir', "Ran Build distdir" );
+run_ok( 'Build distdir', "Ran Build distdir" );
 ok( -f 'lib/PDL/Test/PD.pod', '... and .pod file' );
 
-run_ok( './Build clean', "Ran Build clean" );
+run_ok( 'Build clean', "Ran Build clean" );
 ok( !-f 'lib/PDL/Test/PD.pm',  '... removed .pm file' );
 ok( !-f 'lib/PDL/Test/PD.xs',  '... and .xs file' );
 ok( !-f 'lib/PDL/Test/PD.pod', '... and .pod file' );
@@ -77,10 +78,13 @@ done_testing;
 sub run_ok {
     my ( $cmd, $desc ) = @_;
 
+    # Execute with the current perl, this avoids having to deal with relative
+    # path issues on a different OS
+    $cmd = sprintf "%s %s", $Config{perlpath}, $cmd;
+
     my $buffer;
     my $ok =
       ok( run( command => $cmd, verbose => 0, buffer => \$buffer ), $desc );
     diag $buffer unless $ok;
     return $ok;
 }
-

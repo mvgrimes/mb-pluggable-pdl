@@ -25,14 +25,15 @@
             "Module::Build::Pluggable::Base" : 0,
             "PDL" : "2.000",
             "PDL::Core::Dev" : 0,
-            "PDL::PP" : 0
+            "PDL::PP" : 0,
+            "Pod::Perldoc" : 0
          }
       }
    },
    "provides" : {
       "Module::Build::Pluggable::PDL" : {
          "file" : "lib/Module/Build/Pluggable/PDL.pm",
-         "version" : "0.21"
+         "version" : "0.22"
       }
    },
    "release_status" : "stable",
@@ -47,9 +48,10 @@
          "url" : "http://github.com/mvgrimes/mb-pluggable-pdl"
       }
    },
-   "version" : "0.21",
+   "version" : "0.22",
    "x_test_requires" : {
       "IPC::Cmd" : "0",
+      "Path::Class" : "0",
       "Test::More" : "0.87"
    }
 }

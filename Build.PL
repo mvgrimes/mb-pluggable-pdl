@@ -14,11 +14,13 @@ my $build = Module::Build->new(
         'PDL::Core::Dev'                 => 0,
         'PDL::PP'                        => 0,
         'List::MoreUtils'                => 0,
+        'Pod::Perldoc'                   => 0,
     },
 
     test_requires => {
-        'Test::More' => 0.87,
-        'IPC::Cmd'   => 0,
+        'Test::More'  => 0.87,
+        'IPC::Cmd'    => 0,
+        'Path::Class' => 0,
     },
 
     meta_merge => {

@@ -4,11 +4,13 @@ package Module::Build::Pluggable::PDL;
 
 use strict;
 use warnings;
-our $VERSION = '0.21';
+our $VERSION = '0.22';
 use parent qw(Module::Build::Pluggable::Base);
 
 use PDL::Core::Dev;
 use List::MoreUtils qw(first_index);
+use Config;
+use Pod::Perldoc;
 
 sub HOOK_build {
     my ($self) = @_;
@@ -157,14 +159,19 @@ sub HOOK_distdir {
         ( my $prefix       = $build_prefix ) =~ s{/?lib/}{};
         ( my $package      = $build_prefix ) =~ s{/}{::}g;
 
+        # Process .pd into a .pm file with embedded POD
         # perl -MPDL::PP=PDL::Opt::QP,PDL::Opt::QP,lib/PDL/Opt/QP lib/PDL/Opt/QP.pd
-        # && perldoc -u lib/PDL/Opt/QP.pm > lib/PDL/Opt/QP.pod
-        my $cmd =
-          sprintf "perl -MPDL::PP=%s,%s,%s %s && perldoc -u %s.pm > %s.pod",
-          $package, $package, $build_prefix, $file, $build_prefix,
-          $build_prefix;
+        my $cmd = sprintf "%s -MPDL::PP=%s,%s,%s %s",
+          $Config{perlpath}, $package, $package, $build_prefix, $file;
+        $self->do_system($cmd) or die "Error running PDL::PP : $@";
 
-        $self->do_system($cmd);
+        # Process .pm into .pod using perldoc as an object
+        # && perldoc -u lib/PDL/Opt/QP.pm > lib/PDL/Opt/QP.pod
+        my $poddoc =
+          Pod::Perldoc->new(
+            args => ['-u', '-d', "$build_prefix.pod", "$build_prefix.pm"] );
+        $poddoc->process();
+
         $self->add_to_cleanup("$build_prefix.pod");
     }
 
@@ -183,7 +190,7 @@ Module::Build::Pluggable::PDL - Plugin to Module::Build to build PDL projets
 
 =head1 VERSION
 
-version 0.21
+version 0.22
 
 =head1 SYNOPSIS
 

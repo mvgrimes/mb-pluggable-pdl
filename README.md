@@ -4,7 +4,7 @@ Module::Build::Pluggable::PDL - Plugin to Module::Build to build PDL projets
 
 # VERSION
 
-version 0.21
+version 0.22
 
 # SYNOPSIS
 
