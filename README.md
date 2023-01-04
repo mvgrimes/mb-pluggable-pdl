@@ -1,6 +1,6 @@
 # NAME
 
-Module::Build::Pluggable::PDL - Plugin to Module::Build to build PDL projets
+Module::Build::Pluggable::PDL - Plugin to Module::Build to build PDL projects
 
 # VERSION
 
